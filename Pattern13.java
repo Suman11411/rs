@@ -7,6 +7,7 @@ public class Pattern13 {
             }
             ++alphabet;
             System.out.println();
+  //          
         }
     }
 }
