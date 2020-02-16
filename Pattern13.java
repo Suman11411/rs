@@ -6,8 +6,7 @@ public class Pattern13 {
                 System.out.print(alphabet + " ");
             }
             ++alphabet;
-            System.out.println();
-  //          
+            System.out.println();   
         }
     }
 }
