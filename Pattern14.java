@@ -12,6 +12,7 @@ public class Pattern14 {
                 System.out.print("* ");
             }
             System.out.println();
+            
         }
     }
 }
