@@ -6,6 +6,7 @@ public class Pattern11 {
                 System.out.print(j + " ");
             }
             System.out.println();
+            
         }
     }
 }
