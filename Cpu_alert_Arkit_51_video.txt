@@ -1,0 +1,32 @@
+#Making Real Time CPU Utilization Monitoring Script
+
+#How to monitoring Cpu Utilization .When it went to above 98% critical , 80-98 warning ,below 80 then it should #not send any alert.
+#!/bin/bash
+PATHS="/"
+HOSTNAME=$(hostname)
+CRITICAL=98
+WARNING=80
+CRITICALMail="braghu214@gmail.com"
+MAILWAR="braghu214@Domain.in"
+mkdir -p /var/log/cpu_utility_history
+LOGFILE=/var/log/cpu_utility_history/cpu_usage-`date +%h%d%y`.log
+touch $LOGFILE
+
+for path in $PATHS
+do
+CPULOAD=`top -b -n 2 -d1 | grep "Cpu" | tail -n2 | awk '{print $2}'`
+if [ -n $WARNING -a -n $CRITICAL ]; then
+if [ "$CPULOAD" -ge "$WARNING" -a "$CPULOAD" -lt "$CRITICAL" ]; then
+echo " `date "+%F %H %M %S"` WARNING - $CPULOAD on host $HOSTNAME" >> $LOGFILE
+echo " warning Cpuload $CPULOAD Host is $HOSTNAME " | mail -s " CPULOAD is WARNING "
+exit 1
+elif ["$CPULOAD" -ge "$CRITICAL" ]; then
+echo " 'date "+%F %H %M %S"' CRITICAL - $CPULOAD on host $HOSTNAME " >> $LOGFILE
+echo "Critical Cpuload $CPULOAD Host is $HOSTNAME" | mail -s "CPULOAD is CRITICALmail "
+exit 2
+else
+echo " 'date "+%F %H %M %S"' OK - $CPULOAD on host $HOSTNAME " >> $LOGFILE
+exit 0
+fi
+fi
+done
