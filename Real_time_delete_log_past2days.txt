@@ -1,0 +1,12 @@
+#!/bin/bash
+ls -ltr /full_backup/archive/ | awk '{print $9}' > /home/ec2-user/scripts/dirs
+for i in `cat /home/ec2-user/scripts/dirs`; do
+STARTTIME=$(date +%s -d "$i 00:00:00")
+ENDTIME=$(date +%s)
+echo $((ENDTIME-STARTTIME)) | awk '{print int($1/60)}' > /home/ec2-user/scripts/value
+COUNT=`cat /home/ec2-user/scripts/value`
+if [ $COUNT -gt 2880 ]; then
+echo "Directories older than two days $i" > /home/ec2-user/scripts/job_log
+rm -rf /full_backup/archive/$i
+fi
+done
