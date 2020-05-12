@@ -25,3 +25,5 @@ USER root
 #RUN chmod +x ./cmd.sh
 
 #CMD ./cmd.sh
+
+CMD apachectl -DFOREGROUND
