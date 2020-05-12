@@ -1,0 +1,27 @@
+FROM centos
+
+LABEL maintainer=Raghu
+
+ARG user
+
+RUN yum install -y httpd unzip
+
+ENV RAGHU beginner-html-site-styled
+
+WORKDIR /var/www/html
+
+ADD https://github.com/mdn/$RAGHU/archive/gh-pages.zip /var/www/html/code.zip
+
+RUN unzip code.zip && mv ./$RAGHU-gh-pages/* . && echo $RAGHU > ./env.html
+
+RUN useradd app && chown -R $user:$user /var/www/html
+
+USER $user
+
+USER root
+
+#COPY cmd.sh ./cmd.sh
+
+#RUN chmod +x ./cmd.sh
+
+#CMD ./cmd.sh
