@@ -1,0 +1,19 @@
+sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y
+sudo dnf -y install ansible
+ansible --version
+
+Tomcat7
+
+https://downloads.apache.org/tomcat/tomcat-7/v7.0.104/bin/apache-tomcat-7.0.104.tar.gz
+
+Tomcat8
+
+https://downloads.apache.org/tomcat/tomcat-8/v8.5.55/bin/apache-tomcat-8.5.55.tar.gz
+
+Tomcat9
+
+https://downloads.apache.org/tomcat/tomcat-9/v9.0.35/bin/apache-tomcat-9.0.35.tar.gz
+===========================================================================================
+<user username="tom8" password="tom8" roles="manager-script,manager-gui"/>
+
+<user username="tom9" password="tom9" roles="manager-script,manager-gui"/>
