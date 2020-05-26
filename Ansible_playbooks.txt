@@ -1,0 +1,621 @@
+Ansible Playbook to install Java 8 on Ubuntu - How to install Java 8 using Ansible Playbook
+
+Find below Ansible playbook to install Java 8 on Ubuntu
+
+Step 1: Create the playbook first with name. for e.g, installJava.xml
+
+---
+- hosts: Java_Group
+
+  tasks:
+  - name: Update APT package manager repositories cache
+    become: true
+    apt:
+      update_cache: yes
+
+  - name: Install OpenJDK Java
+    become: yes
+    apt:
+      name: "{{ item }}"
+      state: present
+    with_items:
+     openjdk-8-jdk
+
+2. sudo vi /etc/ansible/hosts
+make sure you add below entry with target node IP changed (in red color).
+[Java_Group]  
+xx.xx.xx.xx ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa  ansible_python_interpreter=/usr/bin/python3
+
+3. sudo ansible-playbook installJava.xml
+
+now after successfully executing, enter below command in target node to make sure Java is installed:
+
+java -version
+
+Click here to learn how to create more playbooks in Ansible for installing Maven and Jenkins
+
+Ansible playbook for LAMP Installation on Ubuntu | Install LAMP stack using Ansible on Ubuntu 18.0.4
+Playbook for installing LAMP stack on Ubuntu using Ansible Playbook
+
+sudo vi installLAMP.yml
+---
+- hosts: My_Group
+  tasks:
+    - name: Install LAMP stack using Ansible
+      become: yes
+      apt:
+        name: "{{ packages }}"
+        state: present
+      vars:
+        packages:
+           - apache2
+           - mysql-server
+           - php
+
+sudo ansible-playbook installLAMP.yml
+
+
+
+This is the execution result of the playbook.
+
+
+Install Tomcat using Ansible playbook on Ubuntu - Install Tomcat on Ubuntu using Ansible playbook
+Playbook for installing Tomcat 9 on Ubuntu using Ansible Playbook
+
+sudo vi installTomcat.yml
+---
+- hosts: My_Group
+  tasks:
+    - name: Install Tomcat 9 on Ubuntu
+      become: yes
+      apt: pkg={{ item }} state=latest update_cache=yes cache_valid_time=3600
+      with_items:
+        - tomcat9
+
+sudo ansible-playbook installTomcat.yml
+
+
+
+This is the execution result of Ansible playbook.
+
+Posted by DevOps Coach at 7:20 PM No comments: 
+Email This
+BlogThis!
+Share to Twitter
+Share to Facebook
+Share to Pinterest
+Labels: Ansible, Playbooks, Tomcat, Ubuntu
+Sunday, April 26, 2020
+Ansible playbook for Java 11 Installation on Ubuntu - Ansible Java 11 Playbook Ubuntu 18.0.4
+1. Login to Ansible management server/machine. Create SSH keys in Ansible host machine by executing the below command: (if you already have keys created, please skip this step)
+ssh-keygen 
+
+enter three times..now you will see keys successfully created.
+2.  Execute the below command on Ansible management node and copy the public key content:
+sudo cat ~/.ssh/id_rsa.pub
+
+
+copy the above output.
+3. Now login to target node, execute the below command to open the file
+sudo vi /home/ubuntu/.ssh/authorized_keys
+type shift A and then enter now 
+    and paste the key in the above file. please do not delete any existing values in this file.
+
+4. Now go back to Ansible mgmt node, do changes in /etc/ansible/hosts file to include the node you will be installing software. Make sure you add public IP address of target node as highlighted below in red color:
+sudo vi /etc/ansible/hosts
+[My_Group]  
+xx.xx.xx.xx ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa  ansible_python_interpreter=/usr/bin/python3
+
+5. make changes in playbooks as given below,
+cd ~/playbooks
+
+sudo vi installJava11.yml
+
+---
+- hosts: My_Group
+
+  tasks:
+  - name: Update APT package manager repositories cache
+    become: true
+    apt:
+      update_cache: yes
+
+  - name: Install OpenJDK Java
+    become: yes
+    apt:
+      name: "{{ item }}"
+      state: present
+    with_items:
+     openjdk-11-jdk
+
+6. Execute Ansible playbook
+sudo ansible-playbook installJava11.yml
+
+now after successfully executing, enter below command to make sure Java is installed in target node:
+
+java -version
+openjdk version "11.0.7" 2020-04-14
+OpenJDK Runtime Environment (build 11.0.7+10-post-Ubuntu-2ubuntu218.04)
+OpenJDK 64-Bit Server VM (build 11.0.7+10-post-Ubuntu-2ubuntu218.04, mixed mode, sharing)
+
+If you are getting any warning like below:
+
+
+
+Install an Older Version of the urllib3 Package for Python
+pip install urllib3==1.21.1
+Posted by DevOps Coach at 12:30 PM No comments: 
+Email This
+BlogThis!
+Share to Twitter
+Share to Facebook
+Share to Pinterest
+Labels: Ansible, Playbooks, Ubuntu18.0.4
+Wednesday, April 24, 2019
+Ansible playbook to install OpenJDK 8 on Ubuntu - Install OpenJDK 8 using Ansible playbook
+ Here below is ansible playbook to install Open JDK 8 on Ubuntu:
+
+---
+- hosts: Java_Group
+
+  tasks:
+  - name: Update APT package manager repositories cache
+    become: true
+    apt:
+      update_cache: yes
+
+  - name: Install OpenJDK Java
+    become: yes
+    apt:
+      name: "{{ item }}"
+      state: present
+    with_items:
+     openjdk-8-jdk
+Posted by DevOps Coach at 8:16 PM No comments: 
+Email This
+BlogThis!
+Share to Twitter
+Share to Facebook
+Share to Pinterest
+Labels: Ansible, IAC, java, Playbooks
+Thursday, January 24, 2019
+Install Maven using Ansible playbook on Ubuntu - Install Maven on Ubuntu using Ansible playbook
+Playbook for installing Maven on Ubuntu using Ansible Playbook
+
+sudo vi installMaven.yml
+---
+- hosts: My_Group
+  tasks:
+    - name: install maven on your local Ubuntu machine
+      become: yes
+      apt: pkg={{ item }} state=latest update_cache=yes cache_valid_time=3600
+      with_items:
+        - maven
+
+sudo ansible-playbook installMaven.yml
+
+
+
+This is the execution result of Ansible playbook.
+Posted by DevOps Coach at 8:52 AM No comments: 
+Email This
+BlogThis!
+Share to Twitter
+Share to Facebook
+Share to Pinterest
+Labels: Ansible, Maven, Playbooks, Ubuntu
+Friday, January 11, 2019
+Ansible Playbook to install Java 8 on Ubuntu - How to install Java 8 using Ansible Playbook
+
+Find below Ansible playbook to install Java 8 on Ubuntu
+
+Step 1: Create the playbook first with name. for e.g, installJava.xml
+
+---
+- hosts: Java_Group
+
+  tasks:
+  - name: Update APT package manager repositories cache
+    become: true
+    apt:
+      update_cache: yes
+
+  - name: Install OpenJDK Java
+    become: yes
+    apt:
+      name: "{{ item }}"
+      state: present
+    with_items:
+     openjdk-8-jdk
+
+2. sudo vi /etc/ansible/hosts
+make sure you add below entry with target node IP changed (in red color).
+[Java_Group]  
+xx.xx.xx.xx ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa  ansible_python_interpreter=/usr/bin/python3
+
+3. sudo ansible-playbook installJava.xml
+
+now after successfully executing, enter below command in target node to make sure Java is installed:
+
+java -version
+
+Click here to learn how to create more playbooks in Ansible for installing Maven and Jenkins.
+
+Posted by DevOps Coach at 9:34 PM 3 comments: 
+Email This
+BlogThis!
+Share to Twitter
+Share to Facebook
+Share to Pinterest
+Labels: Ansible, java, Playbooks
+Saturday, December 15, 2018
+Ansible Playbook for provisioning a new EC2 instance in AWS - Create a new EC2 Using Ansible Playbook
+Please find the Ansible Playbook for provisioning a new EC2 instance. Please follow the below steps in the machine where you installed Ansible.
+
+Steps to create Ec2 instance using Ansible:
+
+
+1. Login to AWS console, click on username and go to My security credentials.
+2. Continue on security credentials, click on access keys
+3. Create a new access key if you dont have one. Make sure you download the keys.
+4. Login to EC2 instance using Git bash or ITerm where you installed Ansible.
+
+execute the below command and then enter the access keys and secret access keys as below:
+
+sudo vi ~/.boto
+
+add below three lines in the above file, replace the ?? with access key and secret key values:
+[Credentials]
+aws_access_key_id = ??
+aws_secret_access_key = ??
+
+
+
+
+
+
+5. Edit Ansible hosts or inventory file
+sudo vi /etc/ansible/hosts 
+Add the below two lines in the end of the file:
+[localhost]
+local
+
+6. cd ~
+7. mkdir playbooks  
+8. cd playbooks
+
+Create Ansible playbook
+9. sudo vi create_jenkins_ec2.yml 
+(copy the below content in green color)
+edit the create_jenkins_ec2.yml to make sure you update the key which is red marked below:
+---
+ - name:  provisioning EC2 Lab Exercises using Ansible
+   hosts: localhost
+   connection: local
+   gather_facts: False
+   tags: provisioning
+
+   vars:
+     keypair: MyinfraCodeKey
+     instance_type: t2.small
+     image: ami-07c1207a9d40bc3bd
+     wait: yes
+     group: webserver
+     count: 1
+     region: us-east-2
+     security_group: my-security-grp
+   
+   tasks:
+
+     - name: Create my security group
+       local_action: 
+         module: ec2_group
+         name: "{{ security_group }}"
+         description: Security Group for webserver Servers
+         region: "{{ region }}"
+         rules:
+            - proto: tcp
+              from_port: 22
+              to_port: 22
+              cidr_ip: 0.0.0.0/0
+            - proto: tcp
+              from_port: 8080
+              to_port: 8080
+              cidr_ip: 0.0.0.0/0
+            - proto: tcp
+              from_port: 80
+              to_port: 80
+              cidr_ip: 0.0.0.0/0
+            - proto: tcp
+              from_port: 443
+              to_port: 443
+              cidr_ip: 0.0.0.0/0
+         rules_egress:
+            - proto: all
+              cidr_ip: 0.0.0.0/0
+       register: basic_firewall
+     - name: Launch the new EC2 Instance
+       local_action:  ec2 
+                      group={{ security_group }} 
+                      instance_type={{ instance_type}} 
+                      image={{ image }} 
+                      wait=true 
+                      region={{ region }} 
+                      keypair={{ keypair }}
+                      count={{count}}
+       register: ec2
+     - name: Add Tagging to EC2 instance
+       local_action: ec2_tag resource={{ item.id }} region={{ region }} state=present
+       with_items: "{{ ec2.instances }}"
+       args:
+         tags:
+           Name: MyTargetEc2Instance
+
+
+
+10. now execute the ansible playbook by
+sudo ansible-playbook create_jenkins_ec2.yml
+
+
+
+
+Install an Older Version of the urllib3 Package for Python
+If you get any warnings like below, downgrade urllib3 version
+pip3 install urllib3==1.21.1
+
+
+11. if everything is good, you should see the new instance created on AWS console. make sure you are able to connect to that instance.
+
+That's it!! That is how you create a new EC2 instance using Ansible.
+
+Posted by DevOps Coach at 1:30 PM 2 comments: 
+Email This
+BlogThis!
+Share to Twitter
+Share to Facebook
+Share to Pinterest
+Labels: Ansible, IAC, Infrastructure, Playbooks
+Sunday, May 13, 2018
+install Jenkins using Ansible Playbook on Ubuntu - Install Jenkins using Ansible Playbooks
+Find below Ansible playbook for installing Jenkins on a Ubuntu machine.
+
+Pre-requistes:
+Java needs to be installed already on machine before setting up Jenkins. please Click here for Java Playbook.
+
+Please find steps for installing Apache software on nodes using Ansible in Ubuntu EC2:
+
+1. sudo vi installJenkins.yml
+Copy the below yellow highlighted in the above file: 
+
+---
+ - hosts: My_Group
+  
+   tasks:
+    - name: ensure the jenkins apt repository key is installed
+      apt_key: url=https://pkg.jenkins.io/debian-stable/jenkins.io.key state=present
+      become: yes
+
+    - name: ensure the repository is configured
+      apt_repository: repo='deb https://pkg.jenkins.io/debian-stable binary/' state=present
+      become: yes
+
+    - name: ensure jenkins is installed
+      apt: name=jenkins update_cache=yes
+      become: yes
+
+    - name: ensure jenkins is running
+      service: name=jenkins state=started
+
+
+
+
+
+
+
+
+
+
+
+
+2.  sudo vi /etc/ansible/hosts
+make sure you add below entry with target node IP changed (in red color).
+[My_Group]  
+xx.xx.xx.xx ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa  ansible_python_interpreter=/usr/bin/python3
+
+
+
+
+
+3. Execute the below command:
+sudo ansible-playbook installJenkins.yml
+
+4. This should install Jenkins on the target node and should install Jenkins.
+
+5. Now enter public ip address or public dns name with port no 8080 of target server by in the browser to see Jenkins up and running.
+
+http://target_node_public_dns_name:8080
+
+Posted by DevOps Coach at 8:16 PM 3 comments: 
+Email This
+BlogThis!
+Share to Twitter
+Share to Facebook
+Share to Pinterest
+Labels: Ansible, IAC, Infrastructure, Jenkins, Playbooks
+Monday, April 9, 2018
+Ansible playbook for installing Apache on Redhat Linux
+---
+ - hosts: Apache_Group
+   become: true
+   tasks:
+     - name: install the latest version of Apache
+       yum:
+         name: httpd
+         state: latest
+
+     - name: ensure apache started
+       service: name=httpd state=started enabled=yes
+Posted by DevOps Coach at 5:42 PM 2 comments: 
+Email This
+BlogThis!
+Share to Twitter
+Share to Facebook
+Share to Pinterest
+Labels: Ansible, Playbooks, Redhat Linux
+Friday, March 16, 2018
+Terminate EC2 Ansible Playbook Example - How to terminate EC2 using Ansible playbook
+
+Creating EC2 instance using Ansbile on AWS is muich easier than terminating EC2. Please find a simple playbook for terminating EC2 instance using EC2 instance id.
+
+Create playbook by executing below command:
+
+sudo vi terminate.yml 
+---
+ - name: ec2 provisioning using Ansible
+   hosts: local
+   connection: local
+   gather_facts: False
+
+ - hosts: local
+   gather_facts: False
+   connection: local
+   vars:
+     - region: 'us-east-2'
+     - ec2_id: 'i-05f39cfb80c97df38'
+   tasks:
+     - name: Terminate instances
+       local_action: ec2
+         state='absent'
+         instance_ids='{{ ec2_id }}'
+         region='{{ region }}'
+         wait=True
+
+This playbook can be executed by two ways. Either mention instance ID in the ansible playbook or pass as an argument. Intstance Id can be taken from AWS mgmt console.
+
+ansible-playbook terminate.yml
+or by passing EC2_id from command line.
+ansible-playbook terminate.xml -e ec2_id=i-xxxx
+
+PLAY [ec2 provisioning using Ansible] *********************************************************************
+PLAY [local] **********************************************************************************************
+TASK [Terminate instances] ********************************************************************************
+ok: [local -> localhost]
+
+
+
+PLAY RECAP ************************************************************************************************
+local                      : ok=1    changed=0    unreachable=0    failed=0
+Posted by DevOps Coach at 9:03 AM 1 comment: 
+Email This
+BlogThis!
+Share to Twitter
+Share to Facebook
+Share to Pinterest
+Labels: amazon EC2, Ansible, Playbooks
+Saturday, March 10, 2018
+Playbook for installing Apache on Ubuntu - Ansible Playbook for installing Apache on Ubuntu
+Please find steps for installing Apache software on nodes using Ansible in Ubuntu EC2:
+
+1. Login to Ansible machine. Create SSH keys in Ansible host machine by executing the below command:
+ssh-keygen
+2. Copy the public keys(id_rsa.pub) from ansible node each node in /home/ubuntu/.ssh/authorized_keys file. Execute the below command on Ansible and copy the content:
+    sudo cat ~/.ssh/id_rsa.pub
+
+3. Now login to target node, execute the below command to open the file
+ sudo vi /home/ubuntu/.ssh/authorized_keys
+type shift A and then enter. now 
+    and paste the key in the above file. please do not delete any existing keys.
+
+4. go back to ansible mgmt node, make sure you are able to ssh from ansible mgmt node after copying the keys above:
+  ssh private_ip_of_target_node
+now type exit to come out of the target node.
+5. Now in ansible mgmt node, now make changes in /etc/ansible/hosts file to include the node you will be installing software. Make sure you add public IP address as highlighted below in green color:
+   sudo vi /etc/ansible/hosts
+[My_Group]  
+34.216.41.94 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa  ansible_python_interpreter=/usr/bin/python3
+
+6. make changes in playbooks as given below,
+cd ~/playbooks
+
+sudo vi installApache.yml
+Copy the below content
+
+---
+- hosts: My_Group
+  become: true
+  tasks:
+    - name: Install apcahe
+      apt: name=apache2 state=present update_cache=yes
+
+    - name: ensure apache started
+      service: name=apache2 state=started enabled=yes
+
+7. now execute the playbook by running the below command:
+sudo ansible-playbook installApache.yml
+8. This should install Apache on the nodes and should bring the apache up and running.
+9. Now enter public ip address or public dns name of target server by in thr browser to see home page of Apache running.
+Posted by DevOps Coach at 8:11 AM 1 comment: 
+Email This
+BlogThis!
+Share to Twitter
+Share to Facebook
+Share to Pinterest
+Labels: Ansible, Apache, Playbooks, Ubuntu
+Wednesday, February 28, 2018
+Ansible playbook for Java Installation on Nodes
+1. Login to Ansible management server/machine. Create SSH keys in Ansible host machine by executing the below command: (if you already have keys created, please skip this step)
+ssh-keygen 
+
+enter three times..now you will see keys successfully created.
+2.  Execute the below command on Ansible management node and copy the public key content:
+ sudo cat ~/.ssh/id_rsa.pub
+
+copy the above output.
+3. Now login to target node, execute the below command to open the file
+ sudo vi /home/ubuntu/.ssh/authorized_keys
+type shift A and then enter now 
+    and paste the key in the above file. please do not delete any existing values in this file.
+
+4. go back to ansible mgmt node, make sure you are able to ssh from ansible mgmt node after copying the keys above:
+  ssh private_ip_of_target_node
+now type exit to come out of the target node.
+5. Now in ansible mgmt node, now make changes in /etc/ansible/hosts file to include the node you will be installing software. Make sure you add public IP address as highlighted below in red color:
+   sudo vi /etc/ansible/hosts
+[My_Group]  
+xx.xx.xx.xx ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa  ansible_python_interpreter=/usr/bin/python3
+
+6. make changes in playbooks as given below,
+cd ~/playbooks
+
+sudo vi installJava.yml
+
+---
+- hosts: My_Group
+
+  tasks:
+  - name: Update APT package manager repositories cache
+    become: true
+    apt:
+      update_cache: yes
+
+  - name: Install OpenJDK Java
+    become: yes
+    apt:
+      name: "{{ item }}"
+      state: present
+    with_items:
+     openjdk-8-jdk
+
+7. Execute Ansible playbook
+sudo ansible-playbook installJava.yml
+
+now after successfully executing, enter below command to make sure Java is installed in target node:
+
+java -version
+
+Note:
+
+If you have issues in installing Java on target node, please do the following on target node to install python modules:
+
+sudo apt-get update
+sudo apt-get install python-software-properties
