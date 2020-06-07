@@ -1,0 +1,46 @@
+sudo apt-get update -y
+
+sudo apt-get install docker.io
+
+sudo su
+
+sudo apt-get update && sudo apt-get install -y apt-transport-https curl
+
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
+deb https://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl
+
+
+sudo apt-get update && sudo apt-get install -y apt-transport-https curl
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
+deb https://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl
+
+Master
+=========
+kubeadm init --apiserver-advertise-address=172.31.46.176 --pod-network-cidr=192.168.0.0/16 --ignore-preflight-errors=NumCPU
+
+slave
+==========
+kubeadm join 172.31.46.xxx:6443 --token 18nf5y.luaiy0gvl505bmmi \
+    --discovery-token-ca-cert-hash sha256:ccd165f3b40e90d0183e221e1abfd5ba621d0d1802b41bca43feef6c1659b652
+
+Master
+===========
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+
+kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/rbac-kdd.yaml 
+
+
+kubectl apply -f https://docs.projectcalico.org/v3.8/manifests/calico.yaml
