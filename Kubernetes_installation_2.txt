@@ -1,0 +1,174 @@
+sudo apt-get update -y
+
+sudo apt-get install docker.io
+
+sudo su
+
+sudo apt-get update && sudo apt-get install -y apt-transport-https curl
+
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+
+cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
+deb https://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+
+sudo apt-get update
+
+sudo apt-get install -y kubelet kubeadm kubectl kubernetes-cni
+
+sudo apt-mark hold kubelet kubeadm kubectl
+
+sudo usermod -aG docker ubuntu
+
+systemctl restart docker
+
+systemctl enable docker
+
+systemctl enable docker.service
+
+sudo apt-get install -y kubelet kubeadm kubectl kubernetes-cni
+
+if Error: -
+
+sudo dpkg -i --force-overwrite /var/cache/apt/archives/kubernetes-cni_0.7.5-00_amd64.deb
+
+sudo apt-get install -y kubelet kubeadm kubectl kubernetes-cni
+
+sudo apt-get install vim -y
+
+vim /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+
+
+create images
+==============
+Go to --> Instance --> Action ---> Create image --> K8s_image_name --> No reboot
+
+
+kubeadm init
+
+mkdir -p $HOME/.kube
+
+
+su ubuntu
+
+unlink /home/ubuntu/.kube/config
+
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+kubectl get nodes
+
+kubectl get nodes --all-namespaces
+
+kubectl get pods --all-namespaces
+
+sudo su -
+
+Allow IP tables
+====================
+sysctl net.bridge bridge-nf-call-iptables=1
+
+su ubuntu
+
+kubectl version | base 64 | tr -d '\n'
+
+export kubevar=$(kubectl version | base64 | tr -d "\n")
+
+kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$kubevar"
+
+kubectl get nodes
+
+kubectl get pods --all-namespaces
+
+kubeadm token create --print-join-command
+
+kubectl get nodes
+
+kubectl apply -f "https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml"
+
+vi service.yaml
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-user
+  namespace: kube-system
+
+
+kubectl apply -f service.yaml
+
+vi rolebinding.yaml
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kube-system
+
+nohup kubectl proxy --address 0.0.0.0 --accept-hosts '.*' &
+
+kubectl -n kube-system describe secret $(kubectl -n kube-system get secret |grep admin-user | awk '{print $1}')
+
+nohup kubectl proxy --address 0.0.0.0 --accept-hosts '.*' &
+
+nohup kubectl proxy --address 0.0.0.0 --accept-hosts '.*' &
+
+kubectl -n kube-system get service kubernetes-dashboard
+
+kubectl -n kube-system edit service kubernetes-dashboard
+
+
+erxxxxx----
+
+kubectl apply -f rolebinding.yaml
+
+Master
+=========
+kubeadm init --apiserver-advertise-address=172.31.7.131 --pod-network-cidr=192.168.0.0/16 --ignore-preflight-errors=NumCPU
+==================
+ 
+==========
+kubeadm join 172.31.7.131:6443 --token 18nf5y.luaiy0gvl505bmmi \
+    --discovery-token-ca-cert-hash sha256:ccd165f3b40e90d0183e221e1abfd5ba621d0d1802b41bca43feef6c1659b652
+
+Master
+===========
+
+mkdir -p $HOME/.kube
+
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+kubectl apply -f https://docs.projectcalico.org/v3.3/getting-started/kubernetes/installation/hosted/rbac-kdd.yaml 
+
+kubectl apply -f https://docs.projectcalico.org/v3.8/manifests/calico.yaml
+
+kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
+
+mkdir -p $HOME/.kube
+
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+kubectl version | base64 | tr -d "\n"
+
+export kubevar=$(kubectl version | base64 | tr -d "\n")
+
+kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$kubevar"
+
+kubectl get nodes
+
+kubectl get pods --all-namespaces
+
+kubeadm token create --print-join-command
+
