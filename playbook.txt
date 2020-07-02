@@ -1,0 +1,112 @@
+Playbook
+=============
+1.Playbooks are Ansible’s configuration, deployment, and orchestration language.
+
+If Ansible modules are the tools in your workshop, playbooks are your instruction manuals, and your inventory of hosts are your raw material.
+
+
+
+2.playbooks can be used to manage configurations of and deployments to remote machines. 
+Playbook can sequence multi-tier rollouts involving rolling updates, and can delegate actions to other hosts, interacting with monitoring servers and load balancers along the way.
+
+Playbooks are designed to be human-readable and are developed in a basic text language.
+There are multiple ways to organize playbooks and the files they include, and we’ll offer up some suggestions on that and making the most out of Ansible.
+
+---
+- hosts: webservers
+  vars:
+    http_port: 80
+    max_clients: 200
+  remote_user: root
+  tasks:
+  - name: ensure apache is at the latest version
+    yum:
+      name: httpd
+      state: latest
+  - name: write the apache config file
+    template:
+      src: /srv/httpd.j2
+      dest: /etc/httpd.conf
+    notify:
+    - restart apache
+  - name: ensure apache is running
+    service:
+      name: httpd
+      state: started
+  handlers:
+    - name: restart apache
+      service:
+        name: httpd
+        state: restarted
+
+
+---
+- hosts: webservers
+  remote_user: root
+
+  tasks:
+  - name: ensure apache is at the latest version
+    yum:
+      name: httpd
+      state: latest
+  - name: write the apache config file
+    template:
+      src: /srv/httpd.j2
+      dest: /etc/httpd.conf
+
+- hosts: databases
+  remote_user: root
+
+  tasks:
+  - name: ensure postgresql is at the latest version
+    yum:
+      name: postgresql
+      state: latest
+  - name: ensure that postgresql is started
+    service:
+      name: postgresql
+      state: started
+
+
+Remote users can also be defined per task:
+
+---
+- hosts: webservers
+  remote_user: root
+  tasks:
+    - name: test connection
+      ping:
+      remote_user: yourname
+
+Support for running things as another user is also available (see Understanding privilege escalation: become):
+
+---
+- hosts: webservers
+  remote_user: yourname
+  become: yes
+You can also use keyword become on a particular task instead of the whole play:
+
+---
+- hosts: webservers
+  remote_user: yourname
+  tasks:
+    - service:
+        name: nginx
+        state: started
+      become: yes
+      become_method: sudo
+You can also login as you, and then become a user different than root:
+
+---
+- hosts: webservers
+  remote_user: yourname
+  become: yes
+  become_user: postgres
+
+You can also use other privilege escalation methods, like su:
+
+---
+- hosts: webservers
+  remote_user: yourname
+  become: yes
+  become_method: su

@@ -14,10 +14,6 @@ EOF
 
 sudo apt-get update
 
-sudo apt-get install -y kubelet kubeadm kubectl kubernetes-cni
-
-sudo apt-mark hold kubelet kubeadm kubectl
-
 sudo usermod -aG docker ubuntu
 
 systemctl restart docker
@@ -25,6 +21,10 @@ systemctl restart docker
 systemctl enable docker
 
 systemctl enable docker.service
+
+sudo apt-get install -y kubelet kubeadm kubectl kubernetes-cni
+
+sudo apt-mark hold kubelet kubeadm kubectl
 
 sudo apt-get install -y kubelet kubeadm kubectl kubernetes-cni
 
@@ -38,6 +38,7 @@ sudo apt-get install vim -y
 
 vim /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
 
+Environment="cgroup-driver=systemd/cgroup-driver=cgroupfs"
 
 create images
 ==============
@@ -46,10 +47,9 @@ Go to --> Instance --> Action ---> Create image --> K8s_image_name --> No reboot
 
 kubeadm init
 
-mkdir -p $HOME/.kube
-
-
 su ubuntu
+
+mkdir -p $HOME/.kube
 
 unlink /home/ubuntu/.kube/config
 
@@ -65,6 +65,8 @@ kubectl get pods --all-namespaces
 
 sudo su -
 
+kubectl get nodes
+
 Allow IP tables
 ====================
 sysctl net.bridge bridge-nf-call-iptables=1
@@ -76,7 +78,7 @@ kubectl version | base 64 | tr -d '\n'
 export kubevar=$(kubectl version | base64 | tr -d "\n")
 
 kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$kubevar"
-
+su ubuntu
 kubectl get nodes
 
 kubectl get pods --all-namespaces
@@ -171,4 +173,3 @@ kubectl get nodes
 kubectl get pods --all-namespaces
 
 kubeadm token create --print-join-command
-

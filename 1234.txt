@@ -1,0 +1,17 @@
+{
+name: test
+phone: 9182004429
+courses: [ 'DevOps'],
+address: {
+  city: Hyderabad
+}
+}
+
+ansible all -m setup -a 'filter=ipv4*'
+
+ansible all -m setup -a 'filter=*'
+
+ansible all -m setup | less
+
+ansible all -m setup -a 'filter=*ipv4*'
+

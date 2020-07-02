@@ -1,0 +1,161 @@
+Git Merge :- 
+
+Git Slash :- Temperory repository
+
+Git Reset :- used to remove changes form staging area
+		git reset --hard --> Remove in both stages Staging , Workspace Directory
+
+Git Revert :- used to remove changes from all 3 stages (work directory, staging area and local repository)
+
+Git clone :- To get whole copy of central repository 
+
+Git pull :- To get only new changes from central repository (Incremental data)
+
+Git Pull :- Git Fetch + Git Merge
+
+Git Fetch :-  only bringing changes from central repo to local repo. But these changes will not be integrated to local repo which is there in your server.
+
+Git Bisect :-  use to pick bad commit out of all good commits. 
+		Git bisect divides all commits equally in to two parts (bisecting equally)
+
+Git Squash :- To move multiple commits into its parent so that you end up with one commit.
+	      Finally we will end up with only one parent commit. 
+	      We use this operation just to reduce number of commits. 
+
+Git Hook :- By default we get some configuration files when you install git. 
+	    These files we use to set some permissions and notification purpose.
+
+Git cherry-pick :- A picking particular commit and merging into your current branch.
+
+Git Tags :-  Tag is a kind of meaningful name to a particular commit.
+             Instead of referring to commit ID, we can refer to tags. 
+	     Internally tag will refer to respective commit ID.
+
+	IAC means Infrastructure As Code. 
+	It is the process through which we automate all admin tasks. 
+	Here we write code in Ruby script in chef. 
+	When you apply this code, automatically code will be converted into Infrastructure. 
+	So here we are getting so many advantages in writing the code. 
+
+system admins used to face earlier before No Configuration Tools
+
+To create new branch in Git  =====>>  git checkout -b <branch_name>
+
+PULL REQUEST in GIT
+A pull request in GIT is the list of changes that have been pushed to GIT repository.
+*we create a pull request that contains the changes between master and our feature branch. 
+*This pull request is sent to reviewers for reviewing the code and
+ then merging it into develop or release branch.
+
+Resolve a merge conflict in GIT :-
+When GIT reports merge conflict in a file, it marks the lines as follows:
+ 
+E.g. the business days in this week are 
+
+<<<<<<< HEAD 
+five 
+======= 
+six 
+>>>>>>> branch-feature
+  
+To resolve the merge conflict in a file, we edit the file and fix the conflicting change. 
+In above example we can either keep five or six.
+ 
+After editing the file we run git add command followed by git commit command. 
+Since GIT is aware that it was merge conflict, 
+it links this change to the correct commit.
+
+*To delete an unwanted branch we use following command:
+ 
+git branch –d <branch_name>
+
+*To forcibly delete an unwanted branch with unmerged changes, we use following command:
+ 
+git branch –D <branch_name>
+
+The golden rule of Rebasing 
+is that we should never use git rebase on public branches.
+If other people are using the same branch then they may get confused by looking at the changes in Master branch after GIT rebasing.
+ 
+Therefore, it is not recommended to do rebasing on a public branch that is also used by other collaborators.
+
+Why do we use Interactive Rebasing in place of Auto Rebasing?
+ 
+By using Interactive rebasing we can alter the commits before moving them to a new branch.
+ *This is more powerful than an automated rebase. 
+  It gives us complete control over the branch’s commit history.
+ *Generally, we use Interactive Rebasing to clean up the messy history of commits 
+  just before merging a feature branch into master.
+
+  git rebase <new_commit>
+
+git clone vs git remote?
+ 
+The main difference between git clone and git remote is that 
+*git clone is used to create a new local repository whereas 
+*git remote is used in an existing repository.
+
+*git remote adds a new reference to existing remote repository for tracking further changes.
+*git clone creates a new local repository by copying another repository from a URL.
+
+use of git diff command in GIT?
+ 
+In GIT, git diff command is used to display the differences between 2 versions, or 
+        between working directory and an index, or 
+	between index and most recent commit.
+ 
+	It can also display changes between two blob objects, or 
+	between two files on disk in GIT.
+	
+	GIT Diff helps in finding the changes that can be used for code review for a feature or bug fix.
+
+What is git rerere? 
+In GIT, rerere is a hidden feature. 
+The full form of rerere is “reuse recorded resolution”.
+
+By using rerere, GIT remembers how we’ve resolved a hunk conflict. 
+
+The next time GIT sees the same conflict, it can automatically resolve it for us.
+
+Three most popular git diff commands are as follows:
+git diff	: It displays the differences between working directory and the index.
+git diff –cached: It displays the differences between the index and the most recent commit.
+git diff HEAD	: It displays the differences between working directory and the most recent commit
+
+What is the command to apply a stash?
+ 
+Sometimes we want to save our unfinished work. For this purpose we use git stash command. 
+Once we want to come back and continue working from the last place where we left, 
+we use git stash apply command to bring back the unfinished work.
+ So the command to apply a stash is:
+git stash apply
+Or we can use git stash apply <stashname>
+
+git add <file_name> ---> index/Stage area
+
+Git reset --->(undo git add command)
+
+By default it reverses the action of git add command.
+So we use git reset command to undo the changes of git add command.
+
+we convert git log messages to a different format?
+
+git log – pretty
+This option converts the output format from default to other formats. 
+There are pre-built formats available for our use.
+
+git log –pretty=oneline
+ 
+E.g. git log --pretty=format:"%h - %an, %ar : %s" 
+ba72a6c - Dave Adams, 3 years ago : changed the version number
+
+we change a commit message in GIT? 
+If a commit has not been pushed to GitHub, we can use 
+git commit -ammend "Change old commit message" 
+---> command to change the commit message.
+ 
+ 
+
+
+ 
+ 

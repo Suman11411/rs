@@ -1,0 +1,66 @@
+Shell Script
+1 # Install Apache. 
+2 yum install --quiet -y httpd httpd-devel 
+3 # Copy configuration files. 
+4 cp /path/to/config/httpd.conf /etc/httpd/conf/httpd.conf 
+5 cp /path/to/config/httpd-vhosts.conf /etc/httpd/conf/httpd-vhosts.conf 
+6 # Start Apache and configure it to run at boot. 
+7 service httpd start 
+8 chkconfig httpd on
+
+To run the shell script (in this case, a file named shell-script.sh with the contents as above), you would call it directly from the command line:
+
+# (From the same directory in which the shell script resides). 
+$ ./shell-script.sh
+
+
+vi playbook.yml
+====================
+ ---
+ - hosts: all 
+   tasks: 
+   - name: Install Apache. 
+     command: yum install --quiet -y httpd httpd-devel 
+   - name: Copy configuration files.
+     command: >
+       cp /path/to/config/httpd.conf /etc/httpd/conf/httpd.conf
+     command: >
+       cp /path/to/config/httpd-vhosts.conf /etc/httpd/conf/httpd-vhosts.conf 
+   - name: Start Apache and configure it to run at boot. 
+     command: service httpd start 
+     command: chkconfig httpd on
+
+To run the Ansible Playbook (in this case, a file named playbook.yml with the contents as above), you would call it using the ansible-playbook command:
+
+==> ansible-playbook playbook.yml
+
+
+
+---
+- hosts: all
+  sudo: yes
+  tasks:
+  - name: Install Apache.
+    yum: name={{ item }} state=present
+    with_items:
+      - httpd
+      - httpd-devel
+  - name: Copy configuration files.
+    copy:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}" 
+      owner: root
+      group: root
+      mode: 0644
+    with_items:
+    - {
+      src: "/path/to/config/httpd.conf",
+      dest: "/etc/httpd/conf/httpd.conf" 
+    } 
+    - { 
+      src: "/path/to/config/httpd-vhosts.conf",
+      dest: "/etc/httpd/conf/httpd-vhosts.conf"
+    }
+  - name: Make sure Apache is started and configure it to run at boot.
+    service: name=httpd state=started enabled=yes
+

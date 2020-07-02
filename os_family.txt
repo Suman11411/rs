@@ -1,0 +1,7 @@
+ansible_distribution
+
+ansible_os_family
+
+ansible_user_id": "suman"
+
+ansible_default_ipv4_address

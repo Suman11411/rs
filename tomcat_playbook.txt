@@ -1,0 +1,17 @@
+- name: create Folder
+  file: 
+    path: /media/tomcat9
+    state: directory
+    mode: 0755
+    owner: suman
+    group: suman
+- name: Download Tomcat
+  get_url: http://apachemirror.wuchna.com/tomcat/tomcat-9/v9.0.36/bin/apache-tomcat-9.0.36.tar.gz
+- name: Extract tomcat
+  unarchive:
+    src: /home/suman/tomcat/apache-tomcat-9.0.36.tar.gz
+    dest: /media/tomcat9
+- name: Start Apache-Tomcat-server
+  shell: /media/tomcat9/tomcat/apache-tomcat-9.0.36/bin/startup.sh
+
+http://apachemirror.wuchna.com/tomcat/tomcat-9/v9.0.36/bin/apache-tomcat-9.0.36.tar.gz

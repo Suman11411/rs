@@ -1,0 +1,50 @@
+How to install LAMP Server on RHEL 8 / CentOS 8 Linux ?
+
+1. How to install all LAMP prerequisite packages on RHEL 8 / CentOS 8.
+2. How to secure MariaDB database.
+3. How to start httpd and MariaDB services.
+4. How to open HTTP and HTTPS firewall ports.
+
+1.The following command will install all package prerequisites and tools required to perform the LAMP installation:
+
+dnf install php-mysqlnd php-fpm mariadb-server httpd -y
+
+2.Open HTTP and optionally HTTPS port 80 and 443 on your firewall:
+
+firewall-cmd --permanent --zone=public --add-service=http 
+firewall-cmd --permanent --zone=public --add-service=https
+firewall-cmd --reload
+
+3.Start both Apache webserver and MariaDB services : 
+  Enable MariaDB and httpd to start after system reboot:
+
+systemctl start mariadb
+systemctl enable mariadb
+
+systemctl start httpd
+systemctl enable httpd
+
+4.Secure your MariaDB installation and set root password:
+
+mysql_secure_installation
+
+5. Confirm the LAMP server installation. Create a file called info.php within the /var/www/html/ directory with the following content:
+
+vi /var/www/html/info.php
+
+<?php phpinfo(); ?>
+
+6.change permissions and change file SELinux security context:
+
+chown -R apache:apache /var/www/html/*
+chcon -t httpd_sys_rw_content_t /var/www/html/ -R
+
+7.Navigate your browser to the http://localhost/info.php URL and confirm the LAMP installation.
+
+http://localhost/info.php
+
+dnf search php-
+
+dnf install php-ldap.x86_64 -y
+
+systemctl reload httpd

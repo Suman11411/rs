@@ -1,0 +1,11 @@
+vi debug_msg.yml
+
+---
+- hosts: all
+  tasks:
+  - name: This Task will ping
+    ping:
+  - name: This Task will display Value
+    debug:
+      msg: "{{ ansible_all_ipv4_addresses }}"
+
