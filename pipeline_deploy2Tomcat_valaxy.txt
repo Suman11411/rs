@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage("code print") {
+            steps {
+                echo "Hello ..Megha Shyam"
+            }
+        }
+        stage("clone Git code") {
+            steps {
+                git credentialsId: '92d6c2f7-aad1-4049-874d-4bff8790ee61', url: 'https://github.com/mrf-77/hello-world.git'
+            }
+        }
+        stage(" build code") {
+            steps {
+                sh "mvn clean install"
+		}
+	stage("deploy code") {
+            steps {
+		sshagent(credentials: ['ssh-agent_password'], ignoreMissing: true) {
+    		// some block
+		sh "scp -o StrictHostKeyChecking=no /root/.jenkins/workspace/Project_job11/webapp/target/webapp.war ec2-user@13.229.52.34:/media/tomcat9/webapps"
+				}
+		}
+         }
+    }
+}
