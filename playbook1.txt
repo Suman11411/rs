@@ -1,0 +1,155 @@
+---
+- name: "Simple Playbook - Play 1"
+  hosts: all
+  become: yes
+  tasks:
+    - name: "set hostname on all 5 test servers"
+      hostname: 
+        name: "test{{ play_hosts.index(inventory_hostname) }}"
+
+
+---
+- name: "Simple Playbook - Play 1"
+  hosts: all
+  become: yes
+
+tasks:
+    - name: "set hostname on all 5 test servers"
+      hostname: 
+        name: "test{{ play_hosts.index(inventory_hostname) }}"
+
+"Right, we need to set the hostnames on all 5 of our test boxes"
+
+hosts: all
+
+
+"Remember you will need to log in as root to do that."
+
+become: yes
+
+"Use the hostname command on each box. It uses a desired hostname for the box as the only argument"
+
+tasks:
+  - name: "set hostname on all 5 test servers"
+    hostname: 
+      name: "test{{ play_hosts.index(inventory_hostname) }}"
+
+"I want you to set those hostnames to "test" followed by a sequence number."
+
+name: "test{{ play_hosts.index(inventory_hostname) }}"
+
+vi ansible.cfg
+
+[test]
+10.0.0.1
+10.0.0.2
+10.0.0.3
+10.0.0.4
+10.0.0.5
+
+vlku@client.ansible.lab : cat simplePlaybookHostname.yml
+
+---
+- name: "Simple Playbook - Play 1"
+  hosts: all
+  become: yes
+  tasks:
+    - name: "set hostname on all 5 test servers"
+      hostname: "{{ item }}"
+      loop:
+        - test1
+        - test2
+        - test3
+        - test4
+        - test5
+
+vlku@client.ansible.lab : ansible-playbook simplePlaybookHostname.yml
+PLAY [Simple Playbook - Play 1] ************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [10.0.0.1]
+ok: [10.0.0.2]
+ok: [10.0.0.3]
+ok: [10.0.0.4]
+ok: [10.0.0.5]
+
+TASK [set hostname on all 5 test servers] **************************************
+ok: [10.0.0.1]
+ok: [10.0.0.2]
+ok: [10.0.0.3]
+ok: [10.0.0.4]
+ok: [10.0.0.5] 
+
+PLAY RECAP *********************************************************************
+10.0.0.1     : ok=1    changed=1    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
+10.0.0.2     : ok=1    changed=1    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
+10.0.0.3     : ok=1    changed=1    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
+10.0.0.4     : ok=1    changed=1    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
+10.0.0.5     : ok=1    changed=1    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
+Ansible provides us with loads of info when running a playbook:
+
+First, we've got the default "pre-play" task of gathering facts. This is an important stage of running a playbook that involves Ansible collecting info ("facts") about the target hosts. Hosts, from which Ansible failed to collect info, will not be processed.
+
+Next, Ansible starts going through the tasks included in the play. In this instance, all hosts had their hostnames changed successfully but, in event of a failure/problem, Ansible would report the module's error message along.
+
+Finally, we've got the recap which is pretty self-explanatory - it summarizes what went down, which hosts were processed successfully ("ok"), which were affected by the playbook ("changed"), etc.
+
+More simple playbooks!
+As a closing note, I'd like to share some easy playbooks with you. You can try running them against the hosts in your lab to get used to how Ansible works. Make sure you have a properly configured ansible.cfg and an inventory file handy with at least one host in it. Have fun!
+
+
+Playbook 1: Set basic network settings
+
+---
+- name: "Set basic network settings"
+  hosts: all
+  become: yes
+  tasks:
+    - name: "Set hostname to AnsibleFTW"
+      hostname:
+        name: ansibleftw
+    - name: "Set DNS servers"
+      net_system:
+        name_servers:
+          - 8.8.8.8
+          - 8.8.4.4
+
+Playbook 2: File operations
+
+---
+- name: "File Operations"
+  hosts: all
+  tasks:
+    - name: "Make sure the file exist with touch command"
+      file:
+        path: /tmp/testAnsibleFile
+        state: present
+    - name: "Use echo command to add data to the file"
+      shell: "echo 'DATA DATA DATA DATA' >> /tmp/testAnsibleFile"
+    - name: "Create a directory to host the file in"
+      file:
+        path: /tmp/testAnsibleDir
+        state: directory
+    - name: "Copy the file into our new directory"
+      copy:
+        remote_src: yes
+        src: /tmp/testAnsibleFile
+        dest: /tmp/testAnsibleDir/copyOfAnsibleTestFile
+
+
+Playbook 3: Repos and Packages
+
+---
+- name: "Repos and Packages"
+  hosts: all
+  tasks:
+    - name: "Create new repo"
+      yum_repository:
+        name: epel
+        description: EPEL YUM repo
+        baseurl: https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+    - name: "Install googler package from EPEL repo"
+      yum:
+        name: googler
+        enablerepo: epel
+        state: present

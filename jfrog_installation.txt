@@ -1,0 +1,30 @@
+sudo update-alternatives --config java
+
+wget https://bintray.com/jfrog/artifactory-rpms/rpm -O /bintray-jfrog-artifactory-rpms.repo
+
+sudo mv /bintray-jfrog-artifactory-rpms.repo /etc/yum.repos.d/
+sudo yum install jfrog-artifactory-oss
+echo "export ARTIFACTORY_HOME=/opt/jfrog/artifactory" >> /etc/profile
+. /etc/profile
+env | grep ARTIFACTORY_HOME
+ARTIFACTORY_HOME=/opt/jfrog/artifactory
+
+# Setup Service
+sudo service artifactory start
+
+sudo service artifactory status
+
+
+https://www.linkedin.com/pulse/devops-automation-done-jenkins-github-docker-container-manish-verma
+
+DevOps Automation done with Jenkins, GitHub and Docker container
+
+GitHub offers the distributed version control and source code management (SCM) functionality of Git, plus its own features. It provides access control and several collaboration features such as bug tracking, feature requests, task management for every project.
+
+Jenkins is a free and open source automation server. It helps automate the parts of software development related to building, testing, and deploying, facilitating continuous integration and continuous delivery. It is a server-based system that runs in servlet containers such as Apache Tomcat.
+
+Docker is a set of platform as a service products that uses OS-level virtualization to deliver software in packages called containers. Containers are isolated from one another and bundle their own software, libraries and configuration files; they can communicate with each other through well-defined channels.
+
+This is an automation task where I have used GitHub, Jenkins and Docker platform to do continuous integration by uploading the project codes to GitHub and continuous deployment by fetching and deploying the code on the respective container by checking the type of code.
+
+Enough Introduction Done!!!

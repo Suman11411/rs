@@ -1,0 +1,47 @@
+## Cpu , Memory , Disk utilization on Multiple Servers
+# to collect data on single file of all output in single file
+
+mkdir /scripts
+cd /scripts
+ls
+vi cpu_mem_disk.sh
+
+#!/bin/bash
+# To collect data of cpu, memory ,Disk usage report from Multiple servers
+
+HOSTNAME=$(hostname)
+DATE&TIME=$(date '"+%y-%m-%d %H:%M:%S"')
+CPU_USAGE=$(top -b -n 1 -d1 |grep "Cpu(s)" |awk '{print $2}' |awk -F. '{print $1}')
+MEM_USAGE=$(free |grep Mem |awk '{print $2/$3*100}')
+DISK_USAGE=$(df -P | column -t|awk '{print $5}'| tail -n 1|sed 's//%/g')
+
+echo "Hostname , Date & Time , Cpu (%) , Mem(%) , Disk(%)" >> /opt/usage_report
+echo "$HOSTNAME,$DATE&TIME,$CPU_USAGE,$MEM_USAGE,$DISK_USAGE" >> /opt/usage_report
+
+for i in `cat /scripts/hostlist`;
+do
+R_HOSTNAME=$(ssh $i hostname)
+R_DATE&TIME=$(date '"+%y-%m-%d %H:%M:%S"')
+R_CPU_USAGE=$(top -b -n 1 -d1 |grep "Cpu(s)" |awk '{print $2}' |awk -F. '{print $1}')
+R_MEM_USAGE=$(free |grep Mem |awk '{print $2/$3*100}')
+R_DISK_USAGE=$(df -P | column -t|awk '{print $5}'| tail -n 1|sed 's//%/g')
+echo "$R_HOSTNAME,$R_DATE&TIME,$R_CPU_USAGE,$R_MEM_USAGE,$R_DISK_USAGE" >> /opt/usage_report
+done
+
+vi /scripts/hostlist
+192.xx.xx.xx
+192.xxx.xx.xx
+:wq!
+
+ssh-keygen -t rsa
+cat ~/.ssh/id_rsa.pub
+ctrl+c
+
+ssh 192.xx.xx.xx
+ssh-keygen -t rsa
+vi ~/.ssh/authorized_keys
+ctrl+v
+
+
+# then run scripts ---> sh cpu_mem_disk.sh
+cat /opt/usage_report

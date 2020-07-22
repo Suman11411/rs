@@ -1,0 +1,58 @@
+1. Making a build pipeline where I will create a job to compile the code from source directory and then the artifact will be stored and then the artifact will be used to build a docker image in a next build job in the same pipeline
+
+2. Making a build pipeline where it will just build a docker image and the source code complication will be a part of that. I mean the compilation commands will be written in the dockerfile.
+
+
+How to build DevOps CI/CD Pipeline? (youtube)
+
+
+For OpenSUSE
+echo -e "$new_password\n$new_password" | passwd "$new_username"
+
+4) Guys, Need help ... These days when you launch a machine in any cloud - there's a field where you can write your init script and when machine boots up you have your stuff written in the script. I need a script where users get created during Linux boot up ?
+
+Ans: i) You can write a simple bash script to create user and paste the same
+    ii) 
+	#!/bin/bash 
+
+For CentOS
+echo "$new_password" | passwd --stdin "$new_username"
+
+For Debian/Ubuntu
+echo "$new_username:$new_password" | chpasswd
+
+
+5)I want know how can I find the major and minor patch update. 
+
+Example when I do 
+	#yum check-update
+
+I will all the update available but how I know which is major and which minor.
+
+Ans: What is Server Patching | Linux patching | Security updates | Tech Arkit (youtube)
+
+
+sendEmail | Simple utility to send emails from Linux Command Line | Tech Arkit (youtube)
+
+How to Deploy LAMP Stack on Docker
+
+In this article, we are going to see different ways to deploy Lamp Stack on Docker using Docker Compose as microservices. Docker-compose is a tool used to create docker containers and run multiple containers as single services. 
+
+Supposed if we create WordPress application we require apache/Nginx, PHP, and MySQL. You can create one file which…
+
+https://www.cloud2help.com/deploy-lamp-stack-on-docker/
+
+
+YouTube (https://www.youtube.com/playlist?list=PL8cE5Nxf6M6b8qW7CSMsdKbEsPdG9pWfu)
+Shell Scripting Tutorial for Beginners
+Shell scripting tutorial, shell scripting in linux, shell scripting interview questions, shell scripting for devops, shell scripting tutorial point, shell sc...
+
+https://www.youtube.com/playlist?list=PL8cE5Nxf6M6b8qW7CSMsdKbEsPdG9pWfu
+ Shell scripting tutorial starting from basic to advance follow this playlist, start learning. #TechArkit Share with your friends. Thanks.
+
+
+This is my Docker Project based on Ecommerce business in docker container
+
+https://www.lisenet.com/2019/ansible-generate-crypted-passwords-for-the-user-module/
+
+
